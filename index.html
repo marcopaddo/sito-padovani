@@ -293,6 +293,19 @@ header.solid .menu-btn span{background:var(--ink)}
 .mnav a.btn2{margin-top:22px;text-align:center;border-bottom:0;background:var(--ink);color:#fff;border-radius:999px;padding:16px}
 @media (max-width:860px){ .menu-btn{display:block} }
 @media (min-width:861px){ .mnav,.menu-btn{display:none !important} }
+
+
+.promoV{display:flex;flex-direction:column;align-items:center;margin:0 0 72px}
+.promoV-frame{position:relative;margin:0;width:min(78vw,460px);aspect-ratio:9/16;border-radius:22px;overflow:hidden;background:#1D1D1D;box-shadow:0 40px 90px rgba(0,0,0,.55)}
+.promoV-frame video{display:block;width:100%;height:100%;object-fit:cover;background:#1D1D1D;position:relative;z-index:1}
+.promoV-exp{position:absolute;right:14px;top:14px;z-index:2;width:42px;height:42px;border-radius:50%;background:rgba(17,17,17,.55);backdrop-filter:blur(4px);border:1px solid rgba(255,255,255,.25);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s}
+.promoV-exp:hover{background:rgba(17,17,17,.8)}
+.promoV-cap{margin-top:22px;font-size:15px;color:#9C9C9C;text-align:center}
+#promoFs{position:fixed;inset:0;z-index:250;background:rgba(10,10,10,.97);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .35s}
+#promoFs.on{opacity:1;pointer-events:auto}
+#promoFs video{max-width:92vw;max-height:92vh;width:auto;height:92vh;border-radius:14px;background:#000}
+#promoFs .x{position:absolute;top:24px;right:28px;width:48px;height:48px;border-radius:50%;background:var(--tor);color:#fff;border:0;font-size:24px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center}
+@media (max-width:700px){.promoV-frame{width:88vw}#promoFs video{max-width:96vw;height:auto;max-height:80vh}}
 </style><link rel="preload" as="image" href="assets/a00-edea87b30d.jpg">
 <meta name="description" content="Architetto Marco Padovani, Formigine (Modena). Ristrutturazioni con il Metodo Flusso Continuo e corsi di AI Rendering per le aziende.">
 <link rel="canonical" href="https://architettopadovani.com/">
@@ -408,6 +421,16 @@ header.solid .menu-btn span{background:var(--ink)}
   </div></div></div>
   <div class="wrap" style="padding:40px 0 140px">
     <p class="lead" data-r style="margin-bottom:48px">Corsi pratici per aziende che vogliono imparare a generare immagini e video con l'intelligenza artificiale. Si lavora su progetti reali, dal primo schizzo al contenuto finito.</p>
+
+    <div class="promoV" data-r>
+      <figure class="promoV-frame">
+        <video id="promoVideo" poster="assets/promo-poster.jpg" src="assets/promo-corsi.mp4" controls playsinline preload="none"></video>
+        <button class="promoV-exp" type="button" aria-label="Ingrandisci a tutta pagina">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M16 3h3a2 2 0 0 1 2 2v3"/><path d="M21 16v3a2 2 0 0 1-2 2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+        </button>
+      </figure>
+      <p class="promoV-cap">Guarda il metodo in azione, dal progetto al cantiere.</p>
+    </div>
     <div class="courses">
       <div class="course" data-r><span class="meta">Per architetti e designer</span><h3>Progettare con l'AI</h3><p>Dall'idea al render: interni, materiali e luce generati con l'AI.</p><button class="btn lt info" data-course="Progettare con l'AI">Richiedi maggiori informazioni</button></div>
       <div class="course" data-r style="--d:.1s"><span class="meta">Per aziende del settore ceramico</span><h3>AI Rendering per il marketing ceramico</h3><p>Ambientazioni, cambi posa e contenuti video per il marketing di prodotto.</p><button class="btn lt info" data-course="AI Rendering per il marketing ceramico">Richiedi maggiori informazioni</button></div>
@@ -722,5 +745,32 @@ function close(){b.classList.remove('open');m.classList.remove('open');b.setAttr
 function toggle(){var o=b.classList.toggle('open');m.classList.toggle('open',o);b.setAttribute('aria-expanded',o?'true':'false');document.body.style.overflow=o?'hidden':''}
 b.addEventListener('click',toggle);
 m.querySelectorAll('a').forEach(function(a){a.addEventListener('click',close)});
+})();</script>
+
+
+<div id="promoFs" aria-hidden="true"><video playsinline></video><button class="x" aria-label="Chiudi">×</button></div>
+<script>(function(){
+  const inline=document.getElementById('promoVideo'), exp=document.querySelector('.promoV-exp');
+  const fs=document.getElementById('promoFs'); if(!inline||!exp||!fs) return;
+  const fv=fs.querySelector('video'), x=fs.querySelector('.x');
+  function open(){
+    fv.src=inline.currentSrc||inline.src;
+    fv.load();
+    fv.currentTime=inline.currentTime||0;
+    fs.classList.add('on'); fs.setAttribute('aria-hidden','false');
+    document.body.style.overflow='hidden';
+    fv.play().catch(()=>{});
+    inline.pause();
+  }
+  function close(){
+    inline.currentTime=fv.currentTime||0;
+    fv.pause();
+    fs.classList.remove('on'); fs.setAttribute('aria-hidden','true');
+    document.body.style.overflow='';
+  }
+  exp.addEventListener('click', open);
+  x.addEventListener('click', close);
+  fs.addEventListener('click', e=>{ if(e.target===fs) close(); });
+  addEventListener('keydown', e=>{ if(e.key==='Escape' && fs.classList.contains('on')) close(); });
 })();</script>
 </body></html>
