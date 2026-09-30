@@ -524,6 +524,8 @@ function finish(skipped){
 }
 if(RM){ finish(true); } else {
   setTimeout(()=>{const k=$('#skip'); if(k) k.classList.add('on')},600);
+  setTimeout(()=>finish(true),8000); // rete di sicurezza: il sito appare comunque, qualunque cosa succeda
+
   $('#skip').onclick=()=>finish(true);
   const T=(ms)=>new Promise(r=>setTimeout(r,ms));
   (async()=>{
